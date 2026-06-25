@@ -63,7 +63,7 @@ setLoader(true);
       body: JSON.stringify(payload),
     });
     response = await response.json();
- console.log("Gemini response:", response);
+//  console.log("Gemini response:", response);
     if(response.error){
   console.log(response.error.message);
   setResult([
