@@ -57,9 +57,30 @@ if(question)
 setLoader(true);
     let response = await fetch(URL, {
       method: "POST",
+        headers:{
+    "Content-Type":"application/json"
+  },
       body: JSON.stringify(payload),
     });
     response = await response.json();
+ console.log("Gemini response:", response);
+    if(response.error){
+  console.log(response.error.message);
+  setResult([
+    ...result,
+    {
+      type: "q",
+      text: question ? question : selectedHistory
+    },
+    {
+      type: "a",
+      text: ["Error: " + response.error.message]
+    }
+  ]);
+  setLoader(false);
+  return;
+}
+
     let dataString = response.candidates[0].content.parts[0].text;
     dataString = dataString.split("* ");
     dataString = dataString.map((item) => item.trim());
