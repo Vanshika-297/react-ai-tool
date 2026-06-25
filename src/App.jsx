@@ -29,7 +29,11 @@ if(question)
 {
     if (localStorage.getItem("history")) {
       let history = JSON.parse(localStorage.getItem("history"));
+      history=history.slice(0,19);
       history = [question, ...history];
+      history=history.map((item)=>
+      item.charAt(0).toUpperCase()+item.slice(1).trim())
+      history=[...new Set(history)]
       localStorage.setItem("history", JSON.stringify(history));
       setRecentHistory(history)
     } else {
@@ -102,7 +106,7 @@ if(darkMode=='dark'){
         <option value="light">Light</option>
       </select>
       <RecentSearch recentHistory={recentHistory} setRecentHistory={setRecentHistory} setselectedHistory={setselectedHistory}/>
-      <div className="col-span-4 p-10">
+      <div className="col-span-4 p-10 pb-28 flex flex-col h-full flex-grow">
         <h1 className="text-4xl pb-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-700 to-violet-700"
         >Hello User, Ask me Anything</h1>
         {
@@ -117,7 +121,7 @@ if(darkMode=='dark'){
 :null
         }
 
-        <div ref={scrollToAnswer} className="container h-[110px] overflow-scroll scrollbar-hide ">
+        <div ref={scrollToAnswer} className="container h-110px overflow-scroll scrollbar-hide">
           <div className="dark:text-zinc-300 text-zinc-800">
             <ul>
               {result.map((item, index) => (
@@ -126,13 +130,13 @@ if(darkMode=='dark'){
             </ul>
           </div>
         </div>
-        <div className="dark:bg-zinc-800  bg-red-100 w-1/2 p-1 pr-5 h-16 dark:text-white text-zinc-800 m-auto rounded-4xl border-zinc-700 border flex">
+        <div className="dark:bg-zinc-800 bottom-0  fixed left-1/5 right-0 bg-red-100 w-1/3 p-1 pr-5 h-16 dark:text-white text-zinc-800 m-auto rounded-4xl border-zinc-700 border flex">
           <input
             type="text"
             onKeyDown={isEnter}
             value={question}
             onChange={(event) => setQuestion(event.target.value)}
-            className="w-full h-full p-3 outline-none"
+            className="w-full h-full p-3 outline-none "
             placeholder="Ask me anything"
           />
           <button onClick={askQuestion}>Ask</button>
